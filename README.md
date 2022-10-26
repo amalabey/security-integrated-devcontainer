@@ -36,3 +36,17 @@ Follow the below below steps:
 - Open http://localhost:7071/api/swagger.json to interact with the API.
 
 # How to use?
+## SAST (SonarQube)
+Sonar scan runs on every commit. You will see security issues, code smells, coverage and more in SonarQube (http://localhost:9000):  
+![sonar qube screen](docs/sonarqube.jpg "SonarQube")
+You can manually trigger a code scan by running `/workspace/.devcontainer/scripts/run-code-scan.sh /workspace`.
+
+## SCA (Dependency Track)
+Dependency tracking runs on every commit. You will see dependencies, known vulnerabilities and more in Dependency Track (http://localhost:8080):  
+![dependency track screen](docs/dependencytrack.jpg "Dependency Track")
+You can manually trigger a dependency scan by running `/workspace/.devcontainer/scripts/run-code-scan.sh /workspace`.
+
+## Secret Scanning (GitLeaks)
+Secret scanning runs on pre-commit. It will fail the commit if secrets are found in the commit:  
+![gitleaks screen](docs/gitleaks.jpg "GitLeaks")
+You can manually trigger a secret scan across the entire repository by running `/workspace/.devcontainer/scripts/run-secret-scan.sh`.
