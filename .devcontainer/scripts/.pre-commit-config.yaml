@@ -1,0 +1,9 @@
+repos:
+- repo: local
+  hooks:
+  - id: gitleaks
+    name: GitLeaks
+    description: Detect hardcoded secrets using Gitleaks
+    entry: bash -c 'gitleaks protect --verbose --redact --staged'
+    language: system
+    pass_filenames: false

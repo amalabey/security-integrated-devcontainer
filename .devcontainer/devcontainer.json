@@ -1,0 +1,36 @@
+{
+	"name": "C# (.NET) and PostgreSQL (Community)",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspace",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-dotnettools.csharp",
+				"ms-azuretools.vscode-azurefunctions"
+			]
+		}
+	},
+	"forwardPorts": [
+		7071,
+		"sonarqube:9000",
+		"dtrack-apiserver:8081",
+		"dtrack-frontend:8080"
+	],
+	"remoteUser": "root",
+	"features": {
+		"git": "os-provided",
+		"azure-cli": "latest",
+		"powershell": "7.1"
+	},
+	"postCreateCommand": "dotnet restore",
+	"postStartCommand": "chmod +x /workspace/.devcontainer/scripts/post-devcontainer-start.sh && /workspace/.devcontainer/scripts/post-devcontainer-start.sh",
+	"settings": {
+		"terminal.integrated.profiles.linux": {
+			"ohmyzsh": {
+				"path": "zsh"
+			}
+		},
+		"terminal.integrated.defaultProfile.windows": "ohmyzsh"
+	}
+}
