@@ -25,7 +25,7 @@ Follow the below below steps:
 - Integrated Terminal -> Add "zsh" terminal
 - Open SonarQube on http://localhost:9000. Default username is "admin" and the password is "admin". Change the "admin" password to something else and update the `.devcontainer\local.env` -> `SQ_PASSWORD` to new value.
 - Open Dependency Track on http://localhost:8080. Default username is "admin" and the password is "admin". Change the "admin" account password to something else and log back in using the new password.
-- In Depdendency Track -> Admin -> Teams, add "PROJECT_CREATE_ON_UPLOAD" permission to the "Automation" team. Copy it's API key and update it in the `.devcontainer\local.env` -> `DT_AUTH_TOKEN`.
+- In Depdendency Track -> Administration -> Access Management -> Teams, add "PROJECT_CREATION_UPLOAD" permission to the "Automation" team. Copy it's API key and update it in the `.devcontainer\local.env` -> `DT_AUTH_TOKEN`.
 - Create a `.env` file inside `.devcontainer` directory and include the Finhub API key to run the code sample.
     ```
     finhub_api_baseUrl=https://finnhub.io/api/v1/
@@ -33,5 +33,6 @@ Follow the below below steps:
     ```
 - Command Pallete -> "Dev Containers: Rebuild Container".
 - Press F5 to run the sample API.
+- Open http://localhost:7071/api/swagger.json to interact with the API.
 
 # How to use?
