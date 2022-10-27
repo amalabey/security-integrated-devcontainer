@@ -32,5 +32,8 @@
 			}
 		},
 		"terminal.integrated.defaultProfile.windows": "ohmyzsh"
+	},
+	"remoteEnv": {
+		"HOST_PROJECT_PATH": "${localWorkspaceFolder}"
 	}
 }
