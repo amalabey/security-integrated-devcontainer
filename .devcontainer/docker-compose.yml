@@ -5,9 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    init: true
     volumes:
       - ..:/workspace:cached
       - .zshrc:/root/.zshrc
+      - /var/run/docker.sock:/var/run/docker.sock
     command: sleep infinity
     network_mode: service:sonarqube
 

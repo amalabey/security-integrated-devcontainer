@@ -17,13 +17,18 @@ else
     dotnet sonarscanner begin /k:$SQ_PROJECT_KEY /d:sonar.login=$SQ_AUTH_TOKEN /d:sonar.host.url=http://sonarqube:9000 \
     /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
     /d:sonar.verbose=true \
-    /d:sonar.externalIssuesReportPaths=$HORUSEC_ISSUES_FILE
+    /d:sonar.externalIssuesReportPaths=/workspace/$HORUSEC_ISSUES_FILE
+    
     dotnet build
     dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
-    horusec start -p /workspace -D --config-file-path=/workspace/.devcontainer/horusec-config.json -o="sonarqube" -O="$HORUSEC_ISSUES_FILE"
+
+    echo "Running horusec security scanner"
+    horusec start -p /workspace -P $HOST_PROJECT_PATH --config-file-path=/workspace/.devcontainer/horusec-config.json -o="sonarqube" -O="$HORUSEC_ISSUES_FILE"
+        
     # hack to make horusec output to have absolute file paths
     horusec_output=$(cat $HORUSEC_ISSUES_FILE |  jq '.issues[].primaryLocation.filePath |= "/workspace/"+.')
     echo $horusec_output > $HORUSEC_ISSUES_FILE
+    
     dotnet sonarscanner end /d:sonar.login=$SQ_AUTH_TOKEN
     echo "SQ: Done. SonarScan completed"
 
