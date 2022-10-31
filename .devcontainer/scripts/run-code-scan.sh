@@ -18,17 +18,17 @@ else
     /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
     /d:sonar.verbose=true \
     /d:sonar.externalIssuesReportPaths=/workspace/$HORUSEC_ISSUES_FILE
-    
+
     dotnet build
     dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
 
     echo "Running horusec security scanner"
     horusec start -p /workspace -P $HOST_PROJECT_PATH --config-file-path=/workspace/.devcontainer/horusec-config.json -o="sonarqube" -O="$HORUSEC_ISSUES_FILE"
-        
-    # hack to make horusec output to have absolute file paths
-    horusec_output=$(cat $HORUSEC_ISSUES_FILE |  jq '.issues[].primaryLocation.filePath |= "/workspace/"+.')
+
+    # hack to clean up horusec output
+    horusec_output=$(cat $HORUSEC_ISSUES_FILE |  jq '.issues[].primaryLocation.filePath |= "/workspace/"+.' | jq '.issues[].primaryLocation.message |= sub("^.+detected:\\s"; "")')
     echo $horusec_output > $HORUSEC_ISSUES_FILE
-    
+
     dotnet sonarscanner end /d:sonar.login=$SQ_AUTH_TOKEN
     echo "SQ: Done. SonarScan completed"
 
@@ -43,7 +43,7 @@ else
      -F "projectName=$repo_name" \
      -F "projectVersion=1" \
      -F "bom=@/tmp/bom.xml"
-    
+
     # echo "DT: Done. Dependency scan completed"
 fi
 
