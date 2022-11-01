@@ -21,7 +21,7 @@
   "horusecCliEnableCommitAuthor": false,
   "horusecCliEnableGitHistoryAnalysis": false,
   "horusecCliEnableInformationSeverity": false,
-  "horusecCliEnableOwaspDependencyCheck": false,
+  "horusecCliEnableOwaspDependencyCheck": true,
   "horusecCliEnableShellcheck": false,
   "horusecCliFalsePositiveHashes": null,
   "horusecCliFilesOrPathsToIgnore": [
