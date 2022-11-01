@@ -19,7 +19,7 @@ else
     sanitise horusec output to make it more sonarqube compatible
     horusec_output=$(cat $HORUSEC_ISSUES_FILE | \
          jq '.issues[].primaryLocation.filePath |= "/workspace/"+.' \
-         | jq '.issues[].primaryLocation.message |= sub("^.+detected:\\s"; "")')
+         | jq '.issues[].primaryLocation.message |= gsub("\\)(?<fls>.*?):"; ")")')
     echo $horusec_output > $HORUSEC_ISSUES_FILE
     vuln_dlls=$(jq '.issues[].primaryLocation.filePath' security-issues.json | tr -d '"' | grep -E ".(dll|csproj)$" | uniq | tr '\n' ',')
     
