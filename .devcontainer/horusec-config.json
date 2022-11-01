@@ -97,7 +97,7 @@
       "istoignore": false
     },
     "Semgrep": {
-      "istoignore": false
+      "istoignore": true
     },
     "ShellCheck": {
       "istoignore": false
