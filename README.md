@@ -12,7 +12,7 @@ You will need the following prerequisites in order to run the devcontainer and a
 - Generate a free API key from [Finhub](https://finnhub.io/) to run the code sample
 - If you are using a Linux Docker Host, set below parameters on the host as root (explained [here](https://hub.docker.com/_/sonarqube))
 ```bash
-sysctl -w vm.max_map_count=524288
+sysctl -w vm.max_map_count=262144
 sysctl -w fs.file-max=131072
 ulimit -n 131072
 ulimit -u 8192
