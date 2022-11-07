@@ -22,30 +22,6 @@ services:
     ports:
       - "9000:9000"
 
-  dtrack-apiserver:
-    image: dependencytrack/apiserver:4.6.0
-    deploy:
-      resources:
-        limits:
-          memory: 8192m
-      restart_policy:
-        condition: on-failure
-    ports:
-      - "8081:8080"
-    volumes:
-      - "dependency_track:/data"
-    restart: unless-stopped
-
-  dtrack-frontend:
-    image: dependencytrack/frontend:4.6.0
-    depends_on:
-      - dtrack-apiserver
-    environment:
-      - API_BASE_URL=http://localhost:8081
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
-
 volumes:
   sonarqube_data:
   sonarqube_extensions:
