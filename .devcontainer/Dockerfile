@@ -37,6 +37,9 @@ ENV LANGUAGE en_US.UTF-8
 # Install horusec vul scanner
 RUN curl -fsSL https://raw.githubusercontent.com/ZupIT/horusec/main/deployments/scripts/install.sh | bash -s latest
 
+# Install checkov vul scanner
+RUN pip3 install checkov
+
 # Install Docker CE CLI
 RUN apt-get update \
     && apt-get install -y apt-transport-https ca-certificates curl gnupg2 lsb-release \
