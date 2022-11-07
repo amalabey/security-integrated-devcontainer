@@ -26,8 +26,8 @@ else
     dotnet build
     dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
 
-    horusec start -D -p /workspace -P $HOST_PROJECT_PATH --config-file-path=/workspace/.devcontainer/horusec-config.json -o="sarif" -O="/workspace/.devcontainer/horusec-results.sarif" --log-level=debug
-    checkov -d /workspace -o sarif --output-file-path /workspace/.devcontainer
+    horusec start -D -p /workspace/src -P $HOST_PROJECT_PATH --config-file-path=/workspace/.devcontainer/horusec-config.json -o="sarif" -O="/workspace/.devcontainer/horusec-results.sarif" --log-level=debug
+    checkov -d /workspace/src -o sarif --output-file-path=/workspace/.devcontainer
 
     dotnet sonarscanner end /d:sonar.login=$SQ_AUTH_TOKEN
     echo "SQ: Done. SonarScan completed"
