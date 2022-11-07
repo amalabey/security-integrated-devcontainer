@@ -20,6 +20,8 @@ else
     /d:sonar.scm.exclusions.disabled=true \
     /d:sonar.projectBaseDir=/workspace \
     /d:sonar.javascript.exclusions="node_modules" \
+    /d:sonar.dependencyCheck.jsonReportPath="/workspace/.devcontainer/dependency-check-report.json" \
+    /d:sonar.dependencyCheck.htmlReportPath="/workspace/.devcontainer/dependency-check-report.html" \
     /d:sonar.sarif.path=/workspace/.devcontainer/horusec-results.sarif,/workspace/.devcontainer/results_sarif.sarif
 
     dotnet build
@@ -27,6 +29,7 @@ else
 
     horusec start -D -p /workspace/src -P $HOST_PROJECT_PATH --config-file-path=/workspace/.devcontainer/horusec-config.json -o="sarif" -O="/workspace/.devcontainer/horusec-results.sarif" --log-level=debug
     checkov -d /workspace/src -o sarif --output-file-path=/workspace/.devcontainer
+    /usr/bin/dependency-check.sh -f JSON -f HTML -s . -o .devcontainer --disableAssembly
 
     dotnet sonarscanner end /d:sonar.login=$SQ_AUTH_TOKEN
     echo "SQ: Done. SonarScan completed"
