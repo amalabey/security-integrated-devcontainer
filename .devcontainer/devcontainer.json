@@ -13,9 +13,7 @@
 	},
 	"forwardPorts": [
 		7071,
-		"sonarqube:9000",
-		"dtrack-apiserver:8081",
-		"dtrack-frontend:8080"
+		"sonarqube:9000"
 	],
 	"remoteUser": "root",
 	"features": {
