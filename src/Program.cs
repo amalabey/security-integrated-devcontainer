@@ -18,7 +18,7 @@ namespace Example.Function
                 .ConfigureServices(s =>
                 {
                     s.AddScoped<IFinhubDataMapper, FinhubDataMapper>();
-                    s.AddScoped<IStockDataProvider, FinhubProvider>();
+                    s.AddScoped<IStockDataProvider, MockStockDataProvider>();
                     s.AddScoped<IHttpHelper, HttpHelper>();
                     s.AddHttpClient<FinhubHttpClient>();
                 })
