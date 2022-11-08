@@ -1,7 +1,7 @@
 # Overview
 This is a sample that demonstrates how to use a [VSCode DevContainer](https://code.visualstudio.com/docs/remote/containers) to integrate security tools into your local development workflow. The preconfigured dev-container has following tools integrated via docker compose and git hooks.  
 * **Static Application Security Testing (SAST)**: Community edition of [SonarQube](https://www.sonarqube.org/) runs on the `docker-compose` environment and code is scanned upon every commit by using a Git hook on the local repo.
-* **Software Composition Analysis (SCA)**: A local instance of [OWASP Dependency-Track](https://owasp.org/www-project-dependency-track/) runs on the `docker-compose` environment and dependencies are checked against known vulnerabilities upon every code commit using a Git hook.
+* **Software Composition Analysis (SCA)**: [OWASP Dependency Check Tool](https://owasp.org/www-project-dependency-track/) checks dependencies against known vulnerabilities upon every code commit using a Git hook. Results are published to SonarQube via a [SonarQube Plugin](https://github.com/dependency-check/dependency-check-sonar-plugin)  
 * **Secret Scanning**:  [GitLeaks](https://github.com/zricethezav/gitleaks) runs on pre-commit hook and prevents any secrets from being checked into the source code repository.  
 
 # How to run?
@@ -39,12 +39,12 @@ Follow the below below steps:
 ## SAST (SonarQube)
 Sonar scan runs on every commit. You will see security issues, code smells, coverage and more in SonarQube (http://localhost:9000):  
 ![sonar qube screen](docs/sonarqube.jpg "SonarQube")
-You can manually trigger a code scan by running `/workspace/.devcontainer/scripts/run-code-scan.sh /workspace`.
+You can manually trigger a code scan by running `/workspace/.devcontainer/scripts/run-code-scan.sh`.
 
-## SCA (Dependency Track)
-Dependency tracking runs on every commit. You will see dependencies, known vulnerabilities and more in Dependency Track (http://localhost:8080):  
-![dependency track screen](docs/dependencytrack.jpg "Dependency Track")
-You can manually trigger a dependency scan by running `/workspace/.devcontainer/scripts/run-code-scan.sh /workspace`.
+## SCA (OWASP Dependency Check)
+Dependency tracking runs on every commit. You will see any known vulnerabilities recorded as vulnerabilities in SonarQube (http://localhost:9000):  
+![dependency check report](docs/dependencycheck.jpg "Dependency Check")
+You can manually trigger a dependency scan by running `/workspace/.devcontainer/scripts/run-code-scan.sh`.
 
 ## Secret Scanning (GitLeaks)
 Secret scanning runs on pre-commit. It will fail the commit if secrets are found in the commit:  
