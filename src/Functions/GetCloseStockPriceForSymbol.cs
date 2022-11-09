@@ -5,7 +5,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.OpenApi.Models;
-
+using System.Data.SQLite;
 using Function.Domain.Providers;
 using Function.Domain.Helpers;
 
@@ -40,7 +40,11 @@ namespace Example.Function
         {
             _logger.LogInformation($"Getting previous close stock price for symbol: {symbol}");
 
-            var closePrice = await GetCloseStockPriceForSymbolAsync(symbol);
+            decimal closePrice = 0.0M;
+            if(symbol != "MSFT")
+                await GetStokPriceFromLocalCache(symbol);
+            else
+                await GetCloseStockPriceForSymbolAsync(symbol);
 
             var response = await _httpHelper.CreateSuccessfulHttpResponse(req, closePrice);
             return response;
@@ -51,6 +55,17 @@ namespace Example.Function
             var closePrice = stockData.PreviousClose;
 
             return closePrice;
+        }
+
+        private async Task<decimal> GetStokPriceFromLocalCache(string symbol) {
+            string cs = "Data Source=cache.db";
+            string stm = "SELECT price FROM open_stock_price WHERE symbol="+symbol;
+            using var con = new SQLiteConnection(cs);
+            con.Open();
+            using var cmd = new SQLiteCommand(stm, con);
+            decimal price = (decimal)cmd.ExecuteScalar();
+
+            return await Task.FromResult(price);
         }
     }
 }
