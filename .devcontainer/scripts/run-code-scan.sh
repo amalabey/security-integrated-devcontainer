@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 WORKING_DIR=/workspace
 ENV_VAR_FILE=$WORKING_DIR/.devcontainer/local.env
 
