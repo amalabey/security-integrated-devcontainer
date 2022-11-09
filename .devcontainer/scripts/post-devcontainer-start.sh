@@ -5,7 +5,6 @@ ENV_VAR_FILE=/workspace/.devcontainer/local.env
 init_env_config() {
     printf "SQ_USER=admin\n" >> $ENV_VAR_FILE
     printf "SQ_PASSWORD=admin\n" >> $ENV_VAR_FILE
-    printf "DT_AUTH_TOKEN=dt-api-key\n" >> $ENV_VAR_FILE
 }
 
 load_env_vars() {
@@ -81,7 +80,7 @@ setup_sq_project() {
     then
         >&2 echo "ERR: Project key is empty"
     else
-        printf "SQ_PROJECT_KEY=$project_key\n" >> $ENV_VAR_FILE
+        printf "\nSQ_PROJECT_KEY=$project_key\n" >> $ENV_VAR_FILE
     fi
 
     if [ -z "$user_token" ]
@@ -111,3 +110,8 @@ cp /workspace/.devcontainer/scripts/post-commit.sh /workspace/.git/hooks/post-co
 echo "Git: Installing GitLeaks as a pre-commit hook"
 cd /workspace/.devcontainer/scripts
 pre-commit install --allow-missing-config
+
+echo "Scripts: Executing code scan in the background"
+/workspace/.devcontainer/scripts/run-code-scan.sh &> /workspace/scan.log &
+
+echo "-----> Ready <------"
