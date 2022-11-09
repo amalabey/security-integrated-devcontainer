@@ -12,7 +12,7 @@ namespace Example.Function
     {
         public static void Main()
         {
-            var host = new HostBuilder()
+            var hostBuilder = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
                 .ConfigureOpenApi()
                 .ConfigureServices(s =>
@@ -21,10 +21,10 @@ namespace Example.Function
                     s.AddScoped<IStockDataProvider, MockStockDataProvider>();
                     s.AddScoped<IHttpHelper, HttpHelper>();
                     s.AddHttpClient<FinhubHttpClient>();
-                })
-                .Build();
+                });
+            hostBuilder.EnsureSeeData();
 
-            host.Run();
+            hostBuilder.Build().Run();
         }
     }
 }

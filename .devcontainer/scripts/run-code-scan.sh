@@ -11,6 +11,7 @@ else
 
     echo "SQ: Running sonar scan"
     dotnet sonarscanner begin /k:$SQ_PROJECT_KEY /d:sonar.login=$SQ_AUTH_TOKEN /d:sonar.host.url=http://sonarqube:9000 \
+    /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
     /d:sonar.verbose=true \
     /d:sonar.scm.exclusions.disabled=true \
     /d:sonar.projectBaseDir=$WORKING_DIR \

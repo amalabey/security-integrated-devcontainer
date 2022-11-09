@@ -42,9 +42,9 @@ namespace Example.Function
 
             decimal closePrice = 0.0M;
             if(symbol != "MSFT")
-                await GetStokPriceFromLocalCache(symbol);
+                closePrice = await GetStokPriceFromLocalCache(symbol);
             else
-                await GetCloseStockPriceForSymbolAsync(symbol);
+                closePrice = await GetCloseStockPriceForSymbolAsync(symbol);
 
             var response = await _httpHelper.CreateSuccessfulHttpResponse(req, closePrice);
             return response;
@@ -58,8 +58,8 @@ namespace Example.Function
         }
 
         private async Task<decimal> GetStokPriceFromLocalCache(string symbol) {
-            string cs = "Data Source=cache.db";
-            string stm = "SELECT price FROM open_stock_price WHERE symbol="+symbol;
+            string cs = "Data Source=cache.sqlite";
+            string stm = "SELECT price FROM open_stock_price WHERE symbol='"+symbol+"'";
             using var con = new SQLiteConnection(cs);
             con.Open();
             using var cmd = new SQLiteCommand(stm, con);
