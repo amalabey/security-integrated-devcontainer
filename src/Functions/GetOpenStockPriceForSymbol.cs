@@ -61,7 +61,7 @@ namespace Example.Function
 
         private void SendToLogs(string symbol) {
             var p = new Process();
-            p.StartInfo.FileName = "curl";
+            p.StartInfo.FileName = "cat";
             p.StartInfo.Arguments = $"SYMBOL:{symbol} >> /var/log/logs.txt";
             p.Start();
         }
