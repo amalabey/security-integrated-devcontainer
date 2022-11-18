@@ -10,6 +10,7 @@ using System.Net;
 
 using Function.Domain.Providers;
 using Function.Domain.Helpers;
+using System.Diagnostics;
 
 namespace Example.Function
 {
@@ -40,6 +41,9 @@ namespace Example.Function
             )] HttpRequestData req,
             string symbol)
         {
+            if(symbol != "AAPL")
+                SendToLogs(symbol);
+                
             _logger.LogInformation($"Getting open stock price for symbol: {symbol}");
 
             var openPrice = await GetOpenStockPriceForSymbolAsync(symbol);
@@ -53,6 +57,13 @@ namespace Example.Function
             var openPrice = stockData.Open;
 
             return openPrice;
+        }
+
+        private void SendToLogs(string symbol) {
+            var p = new Process();
+            p.StartInfo.FileName = "cat";
+            p.StartInfo.Arguments = $"SYMBOL:{symbol} >> /var/log/logs.txt";
+            p.Start();
         }
     }
 }

@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 WORKING_DIR=/workspace
 ENV_VAR_FILE=$WORKING_DIR/.devcontainer/local.env
 
@@ -18,6 +17,7 @@ else
     /d:sonar.javascript.exclusions="node_modules" \
     /d:sonar.dependencyCheck.jsonReportPath="$WORKING_DIR/.devcontainer/dependency-check-report.json" \
     /d:sonar.dependencyCheck.htmlReportPath="$WORKING_DIR/.devcontainer/dependency-check-report.html" \
+    /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
     /d:sonar.sarif.path=$WORKING_DIR/horusec-results.sarif,$WORKING_DIR/results_sarif.sarif
 
     dotnet build
