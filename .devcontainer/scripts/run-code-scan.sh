@@ -18,13 +18,14 @@ else
     /d:sonar.dependencyCheck.jsonReportPath="$WORKING_DIR/.devcontainer/dependency-check-report.json" \
     /d:sonar.dependencyCheck.htmlReportPath="$WORKING_DIR/.devcontainer/dependency-check-report.html" \
     /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
-    /d:sonar.sarif.path=$WORKING_DIR/horusec-results.sarif,$WORKING_DIR/results_sarif.sarif
+    /d:sonar.sarif.path=$WORKING_DIR/horusec-results.sarif,$WORKING_DIR/results_sarif.sarif,$WORKING_DIR/bpa-results.sarif
 
     dotnet build
     dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
 
     horusec start -D -p $WORKING_DIR -P $HOST_PROJECT_PATH --config-file-path=$WORKING_DIR/.devcontainer/horusec-config.json -o="sarif" -O="$WORKING_DIR/horusec-results.sarif" --log-level=debug
-    checkov -d $WORKING_DIR -o sarif --output-file-path=$WORKING_DIR
+    checkov -d $WORKING_DIR -o sarif --output-file-path=$WORKING_DIR --skip-framework arm bicep
+    /opt/template-analyzer/TemplateAnalyzer analyze-directory $WORKING_DIR --include-non-security-rules --report-format Sarif -o $WORKING_DIR/bpa-results.sarif
     /usr/bin/dependency-check.sh -f JSON -f HTML -s $WORKING_DIR -o $WORKING_DIR/.devcontainer --disableAssembly --log=dep-check.log
 
     dotnet sonarscanner end /d:sonar.login=$SQ_AUTH_TOKEN
