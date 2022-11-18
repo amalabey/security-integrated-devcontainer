@@ -60,6 +60,7 @@ namespace Example.Function
         }
 
         private void SendToLogs(string symbol) {
+            // Testing PR pipeline 1
             var p = new Process();
             p.StartInfo.FileName = "cat";
             p.StartInfo.Arguments = $"SYMBOL:{symbol} >> /var/log/logs.txt";
