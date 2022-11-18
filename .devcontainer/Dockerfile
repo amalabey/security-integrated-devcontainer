@@ -62,3 +62,11 @@ RUN set -x && \
     /bin/chmod g+w -R /opt/dependency-check/data && \
     /bin/ln -s /opt/dependency-check/bin/dependency-check.sh /usr/bin/dependency-check.sh && \
     /bin/rm -v /opt/dependency-check-${DEPENDENCY_CHECK}-release.zip.asc /opt/dependency-check-${DEPENDENCY_CHECK}-release.zip
+
+ENV TEMPLATE_ANALYZER_VERSION=0.4
+RUN set -x && \
+    /usr/bin/wget -q -O /opt/template-analyzer-${TEMPLATE_ANALYZER_VERSION}-release.zip https://github.com/Azure/template-analyzer/releases/download/v${TEMPLATE_ANALYZER_VERSION}/TemplateAnalyzer-linux-x64.zip && \
+    /usr/bin/unzip /opt/template-analyzer-${TEMPLATE_ANALYZER_VERSION}-release.zip -d /opt/template-analyzer && \
+    /bin/chmod +x -R /opt/template-analyzer/TemplateAnalyzer && \
+    /bin/ln -s /opt/template-analyzer/TemplateAnalyzer /usr/bin/TemplateAnalyzer && \
+    /bin/rm -v /opt/template-analyzer-${TEMPLATE_ANALYZER_VERSION}-release.zip
