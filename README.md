@@ -5,6 +5,7 @@ This is a sample that demonstrates how to use a [VSCode DevContainer](https://co
 * **Secret Scanning**:  [GitLeaks](https://github.com/zricethezav/gitleaks) runs on pre-commit hook and prevents any secrets from being checked into the source code repository.  
 
 # How to run?
+> **_NOTE:_** This application contains deliberate vulnerabilities making the host vulnerable to attacks while running. Please take precaustions to prevent external access while running the application.
 ## Pre-requisites
 You will need the following prerequisites in order to run the devcontainer and accompanying .NET code sample:  
 - VSCode with [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed.
