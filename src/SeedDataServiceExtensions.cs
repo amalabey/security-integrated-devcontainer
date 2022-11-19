@@ -7,20 +7,28 @@ public static class SeedDataServiceExtensions
     {
         SQLiteConnection.CreateFile("cache.sqlite");
 
-        SQLiteConnection dbConnection = new SQLiteConnection("Data Source=cache.sqlite");
+        using SQLiteConnection dbConnection = new SQLiteConnection("Data Source=cache.sqlite");
         dbConnection.Open();
 
-        string sql = "create table open_stock_price (symbol varchar(20), price decimal)";
+        string sql = "CREATE TABLE IF NOT EXISTS open_stock_price (symbol varchar(20), price decimal)";
+        SQLiteCommand createTableCmd = new SQLiteCommand(sql, dbConnection);
+        createTableCmd.ExecuteNonQuery();
 
-        SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
-        command.ExecuteNonQuery();
+        sql = @"INSERT INTO open_stock_price (symbol, price) VALUES ('VIRTU', 10.00);
+        INSERT INTO open_stock_price (symbol, price) VALUES ('ABC', 20.00);
+        INSERT INTO open_stock_price (symbol, price) VALUES ('XYZ', 30.00);";
+        SQLiteCommand insertCmd = new SQLiteCommand(sql, dbConnection);
+        insertCmd.ExecuteNonQuery();
 
-        sql = @"insert into open_stock_price (symbol, price) values ('VIRTU', 10.00);
-        insert into open_stock_price (symbol, price) values ('ABC', 20.00);
-        insert into open_stock_price (symbol, price) values ('DEF', 30.00);";
+        sql = "CREATE TABLE IF NOT EXISTS credit_cards (card_num integer, pin integer)";
+        SQLiteCommand createCCTableCmd = new SQLiteCommand(sql, dbConnection);
+        createCCTableCmd.ExecuteNonQuery();
 
-        command = new SQLiteCommand(sql, dbConnection);
-        command.ExecuteNonQuery();
+        sql = @"INSERT INTO credit_cards (card_num, pin) VALUES (1234567890, 112);
+        INSERT INTO credit_cards (card_num, pin) VALUES (3323423423, 342);
+        INSERT INTO credit_cards (card_num, pin) VALUES (2451328834, 833);";
+        SQLiteCommand insertCCCmd = new SQLiteCommand(sql, dbConnection);
+        insertCCCmd.ExecuteNonQuery();
 
         dbConnection.Close();
     }
