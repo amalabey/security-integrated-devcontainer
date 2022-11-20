@@ -11,5 +11,4 @@ docker run --rm -v $HOST_PROJECT_PATH:/zap/wrk/:rw --add-host=host.docker.intern
     -r zap-results.html \
     -d
 
-
 echo "Done."

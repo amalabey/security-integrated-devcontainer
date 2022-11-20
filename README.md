@@ -3,6 +3,7 @@ This is a sample that demonstrates how to use a [VSCode DevContainer](https://co
 * **Static Application Security Testing (SAST)**: Community edition of [SonarQube](https://www.sonarqube.org/) runs on the `docker-compose` environment and code is scanned upon every commit by using a Git hook on the local repo.
 * **Software Composition Analysis (SCA)**: [OWASP Dependency Check Tool](https://owasp.org/www-project-dependency-track/) checks dependencies against known vulnerabilities upon every code commit using a Git hook. Results are published to SonarQube via a [SonarQube Plugin](https://github.com/dependency-check/dependency-check-sonar-plugin)  
 * **Secret Scanning**:  [GitLeaks](https://github.com/zricethezav/gitleaks) runs on pre-commit hook and prevents any secrets from being checked into the source code repository.  
+* **Dynamic Application Security Testing (DAST)**:  [OWASP Zap](https://www.zaproxy.org/docs/docker/api-scan/) runs on-demand by executing a script provided in the Dev Container.  
 
 # How to run?
 > **_NOTE:_** This application contains deliberate [vulnerabilities](docs/Vulnerabilities.md) making the host vulnerable to attacks while running. Please take precaustions to prevent external access while running the application.
@@ -51,3 +52,10 @@ You can manually trigger a dependency scan by running `/workspace/.devcontainer/
 Secret scanning runs on pre-commit. It will fail the commit if secrets are found in the commit:  
 ![gitleaks screen](docs/gitleaks.jpg "GitLeaks")
 You can manually trigger a secret scan across the entire repository by running `/workspace/.devcontainer/scripts/run-secret-scan.sh`.
+
+## DAST (OWASP Zap)
+[Zap API scan](https://www.zaproxy.org/docs/docker/api-scan/) can be run on-demand by executing the below script. Make sure you run the application by pressing F5, so that Zap can invoke the endpoints.
+```sh
+/workspace/.devcontainer/scripts/run-zap-scan.sh http://host.docker.internal:7071/api/swagger.json
+```
+![Zap Scan Results](docs/zap-scan-results.jpg "Zap scan results")
