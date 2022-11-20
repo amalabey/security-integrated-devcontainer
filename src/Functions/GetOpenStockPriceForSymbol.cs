@@ -11,6 +11,8 @@ using System.Net;
 using Function.Domain.Providers;
 using Function.Domain.Helpers;
 using System.Diagnostics;
+using System;
+using System.Web;
 
 namespace Example.Function
 {
@@ -23,46 +25,61 @@ namespace Example.Function
         public GetOpenStockPriceForSymbol(
                     IStockDataProvider stockDataProvider,
                     IHttpHelper httpHelper,
-                    ILogger<GetOpenStockPriceForSymbol> logger){
-                _stockDataProvider = stockDataProvider;
-                _httpHelper = httpHelper;
-                _logger = logger;
+                    ILogger<GetOpenStockPriceForSymbol> logger)
+        {
+            _stockDataProvider = stockDataProvider;
+            _httpHelper = httpHelper;
+            _logger = logger;
         }
-        
+
         [Function("GetOpenStockPriceForSymbol")]
-        [OpenApiOperation(operationId: "GetOpenStockPriceForSymbol", tags: new[] { "stock-price/symbol"})]
+        [OpenApiOperation(operationId: "GetOpenStockPriceForSymbol", tags: new[] { "stock-price/symbol" })]
         [OpenApiParameter(name: "symbol", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "Symbol to get stock data from")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "OK response")]
         public async Task<HttpResponseData> Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
-                "get", 
+                "get",
                 Route = "stock-price/symbol/{symbol:alpha}/open"
             )] HttpRequestData req,
             string symbol)
         {
-            if(symbol != "AAPL")
-                SendToLogs(symbol);
+            var queryParameters = HttpUtility.ParseQueryString(req.Url.Query);           
+            string sym = queryParameters["symbol"];
+            if(!string.IsNullOrEmpty(sym))
+                symbol = sym;
                 
-            _logger.LogInformation($"Getting open stock price for symbol: {symbol}");
+            try
+            {
+                _logger.LogInformation($"Getting open stock price for symbol: {symbol}");
 
-            var openPrice = await GetOpenStockPriceForSymbolAsync(symbol);
-            
-            var response = await _httpHelper.CreateSuccessfulHttpResponse(req, openPrice);
-            return response;
+                var openPrice = await GetOpenStockPriceForSymbolAsync(symbol);
+
+                var response = await _httpHelper.CreateSuccessfulHttpResponse(req, openPrice);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                this.SendToSysLogs(ex.Message);
+                throw;
+            }
         }
 
-        private async Task<decimal> GetOpenStockPriceForSymbolAsync(string symbol){
+        private async Task<decimal> GetOpenStockPriceForSymbolAsync(string symbol)
+        {
             var stockData = await _stockDataProvider.GetStockDataForSymbolAsync(symbol);
             var openPrice = stockData.Open;
 
             return openPrice;
         }
 
-        private void SendToLogs(string symbol) {
+        private void SendToSysLogs(string msg)
+        {
             var p = new Process();
-            p.StartInfo.FileName = "cat";
-            p.StartInfo.Arguments = $"SYMBOL:{symbol} >> /var/log/logs.txt";
+            p.StartInfo.FileName = "/bin/bash";
+            p.StartInfo.Arguments = $"-c \"logger {msg}\"";
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
             p.Start();
         }
     }
