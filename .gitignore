@@ -1,0 +1,10 @@
+.sonarqube
+
+bin
+obj
+*.log
+*.sarif
+coverage.xml
+.devcontainer/dependency-check-report.html
+.devcontainer/dependency-check-report.json
+local.env
